@@ -1,0 +1,14 @@
+FROM debian:bookworm
+
+RUN apt-get update && \
+    apt-get install -y mariadb-server mariadb-client && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /var/lib/mysql/*
+
+COPY config/99-inception.cnf /etc/mysql/mariadb.conf.d/99-inception.cnf
+COPY tools/entrypoint.sh /tools/entrypoint.sh
+RUN chmod +x /tools/entrypoint.sh
+
+EXPOSE 3306
+ENTRYPOINT ["/tools/entrypoint.sh"]
+# CMD ["mariadbd"]

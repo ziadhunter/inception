@@ -1,7 +1,7 @@
 services:
   nginx:
     build:
-      context: ./requirements/nginx
+      context: ./srcs/requirements/nginx
     image: nginx
     container_name: nginx
     restart: always
