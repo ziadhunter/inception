@@ -18,6 +18,14 @@ RUN apt-get update && \
         gosu && \
     rm -rf /var/lib/apt/lists/*
 
+    
+RUN curl -fL https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+-o /usr/local/bin/wp && \
+chmod +x /usr/local/bin/wp
+
+
+WORKDIR /var/www/html
+
 # RUN mkdir -p /var/www/wordpress
 
 # RUN curl -fsSL https://wordpress.org/latest.tar.gz -o /tmp/wordpress.tar.gz && \
@@ -25,22 +33,15 @@ RUN apt-get update && \
 #     rm /tmp/wordpress.tar.gz && \
 #     chown -R www-data:www-data /var/www/wordpress
 
-RUN curl -fL https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
-        -o /usr/local/bin/wp && \
-    chmod +x /usr/local/bin/wp
-
-WORKDIR /var/www/html
-
-RUN wp --allow-root core download
+# RUN wp --allow-root core download
 
 COPY conf/www.conf /etc/php/8.2/fpm/pool.d/www.conf
 
 COPY tools/entrypoint.sh /usr/local/bin/entrypoint.sh
-
+    
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 9000
 
-# ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-ENTRYPOINT ["php-fpm8.2", "-F"]
-
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["php-fpm8.2", "-F"]

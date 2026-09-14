@@ -18,7 +18,9 @@ if [ ! -f /etc/nginx/ssl/inception.crt ] || [ ! -f /etc/nginx/ssl/inception.key 
 fi
 
 # sed -i "s/\${DOMAIN_NAME}/$DOMAIN_NAME/g" /etc/nginx/conf.d/default.conf
+# wfach tsawenb kolchi rje3 had star
 
 echo "Starting NGINX..."
+
 
 exec nginx -g "daemon off;"

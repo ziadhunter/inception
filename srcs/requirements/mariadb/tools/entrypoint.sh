@@ -25,7 +25,6 @@ if [ ! -d /var/lib/mysql/mysql ]; then
     echo "MariaDB is ready!"
 
     echo "Creating database and user..."
-
     mariadb <<EOF
         CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;
         CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
@@ -39,7 +38,9 @@ EOF
 
     mariadb-admin -uroot -p"${MYSQL_ROOT_PASSWORD}" shutdown
 
+
     echo "MariaDB initialization finished!"
+    
 else
     echo "MariaDB is already initialized"
 fi
