@@ -7,8 +7,9 @@ RUN apt-get update && \
 
 COPY config/99-inception.cnf /etc/mysql/mariadb.conf.d/99-inception.cnf
 COPY tools/entrypoint.sh /tools/entrypoint.sh
+
 RUN chmod +x /tools/entrypoint.sh
 
 EXPOSE 3306
+
 ENTRYPOINT ["/tools/entrypoint.sh"]
-# CMD ["mariadbd"]

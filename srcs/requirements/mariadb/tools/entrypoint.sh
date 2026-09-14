@@ -3,16 +3,16 @@
 if [ ! -d /var/lib/mysql/mysql ]; then
     echo "MariaDB needs initialization"
 
-    ls -la /var/lib/mysql
-
-    mariadb-install-db --user=mysql --datadir=/var/lib/mysql
+    mariadb-install-db \
+        --user=mysql \
+        --datadir=/var/lib/mysql
 
     chown -R mysql:mysql /var/lib/mysql
 
-    echo "MariaDB initialized"
-
     mkdir -p /run/mysqld
     chown mysql:mysql /run/mysqld
+
+    echo "Starting MariaDB temporarily..."
 
     mariadbd --user=mysql &
 
@@ -24,21 +24,31 @@ if [ ! -d /var/lib/mysql/mysql ]; then
 
     echo "MariaDB is ready!"
 
-    echo "Creating database..."
+    echo "Creating database and user..."
 
-    mariadb -e "CREATE DATABASE wordpress;"
+    mariadb <<EOF
+        CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;
 
-    echo "Creating user..."
+        CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
 
-    mariadb -e "CREATE USER 'wpuser'@'%' IDENTIFIED BY 'secret';"
+        GRANT ALL PRIVILEGES ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USER}'@'%';
 
-    echo "Granting privileges..."
+        ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
 
-    mariadb -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wpuser'@'%';"
+        FLUSH PRIVILEGES;
+EOF
 
     echo "Database and user created!"
+
+    echo "Stopping temporary MariaDB..."
+
+    mariadb-admin -uroot -p"${MYSQL_ROOT_PASSWORD}" shutdown
+
+    echo "MariaDB initialization finished!"
 else
     echo "MariaDB is already initialized"
 fi
 
-echo "im here"
+echo "Starting MariaDB..."
+
+exec mariadbd --user=mysql
