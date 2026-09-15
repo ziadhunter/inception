@@ -1,5 +1,8 @@
 #!/bin/bash
 
+mkdir -p /run/mysqld
+chown mysql:mysql /run/mysqld
+
 if [ ! -d /var/lib/mysql/mysql ]; then
     echo "MariaDB needs initialization"
 
@@ -9,8 +12,6 @@ if [ ! -d /var/lib/mysql/mysql ]; then
 
     chown -R mysql:mysql /var/lib/mysql
 
-    mkdir -p /run/mysqld
-    chown mysql:mysql /run/mysqld
 
     echo "Starting MariaDB temporarily..."
 

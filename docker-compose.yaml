@@ -9,3 +9,63 @@ services:
       - .env
     ports:
       - "443:443"
+    volumes:
+      - wordpress_vlm:/var/www/html
+    networks:
+      - inception
+    depends_on:
+      wordpress:
+        condition: service_healthy
+
+  mariadb:
+    build:
+      context: ./srcs/requirements/mariadb
+    image: mariadb
+    container_name: mariadb
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - mariadb_vlm:/var/lib/mysql/
+    networks:
+      - inception
+
+  wordpress:
+    build:
+      context: ./srcs/requirements/wordpress
+    image: wordpress
+    container_name: wordpress
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - wordpress_vlm:/var/www/html
+    networks:
+      - inception
+    healthcheck:
+      test: ["CMD-SHELL", "cgi-fcgi -bind -connect 127.0.0.1:9000"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+networks:
+  inception:
+    name: inception
+    driver: bridge
+
+volumes:
+  mariadb_vlm:
+    name: "mariadb_vlm"
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/zfarouk/data/mysql
+
+  wordpress_vlm:
+    name: "wordpress_vlm"
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/zfarouk/data/wordpress

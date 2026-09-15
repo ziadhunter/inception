@@ -15,6 +15,7 @@ RUN apt-get update && \
         mariadb-client \
         ca-certificates \
         tar \
+        libfcgi-bin\
         gosu && \
     rm -rf /var/lib/apt/lists/*
 
@@ -25,15 +26,6 @@ chmod +x /usr/local/bin/wp
 
 
 WORKDIR /var/www/html
-
-# RUN mkdir -p /var/www/wordpress
-
-# RUN curl -fsSL https://wordpress.org/latest.tar.gz -o /tmp/wordpress.tar.gz && \
-#     tar -xzf /tmp/wordpress.tar.gz -C /var/www && \
-#     rm /tmp/wordpress.tar.gz && \
-#     chown -R www-data:www-data /var/www/wordpress
-
-# RUN wp --allow-root core download
 
 COPY conf/www.conf /etc/php/8.2/fpm/pool.d/www.conf
 

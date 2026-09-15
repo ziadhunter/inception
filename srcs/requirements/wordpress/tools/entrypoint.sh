@@ -23,9 +23,9 @@ echo "MariaDB is ready."
 chown -R www-data:www-data /var/www/html
 chmod -R 775 /var/www/html
 
-if [ ! -f /var/www/html/wp-config.php ]; then
+if [ ! -f /var/www/html/wp-config.php ]; then 
     wp core download --allow-root --path=/var/www/html
-
+    #i still need to understand what is this iand test it
     wp config create \
         --allow-root \
         --dbname="${MYSQL_DATABASE}" \

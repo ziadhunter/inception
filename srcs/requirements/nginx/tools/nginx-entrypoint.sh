@@ -11,14 +11,13 @@ if [ ! -f /etc/nginx/ssl/inception.crt ] || [ ! -f /etc/nginx/ssl/inception.key 
         -newkey rsa:2048 \
         -keyout /etc/nginx/ssl/inception.key \
         -out /etc/nginx/ssl/inception.crt \
-        -subj "/C=MA/ST=Fes/L=Fes/O=1337/OU=Student/CN=zfarouk.42.fr"
-#sawb hna
+        -subj "/C=MA/ST=Fes/L=Fes/O=1337/OU=Student/CN=${DOMAIN_NAME}"
+
 
     chmod 600 /etc/nginx/ssl/inception.key
 fi
 
-# sed -i "s/\${DOMAIN_NAME}/$DOMAIN_NAME/g" /etc/nginx/conf.d/default.conf
-# wfach tsawenb kolchi rje3 had star
+sed -i "s/\${DOMAIN_NAME}/$DOMAIN_NAME/g" /etc/nginx/conf.d/default.conf
 
 echo "Starting NGINX..."
 
