@@ -11,7 +11,7 @@ until mariadb \
     -P "$MYSQL_PORT" \
     -u "$MYSQL_USER" \
     -p"$MYSQL_PASSWORD" \
-    -e "SELECT 1;"
+    -e "SELECT 1;" 1> /dev/null 2>&1
 do
     echo "MariaDB is not ready yet..."
     sleep 2

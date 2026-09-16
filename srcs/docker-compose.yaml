@@ -1,7 +1,7 @@
 services:
   nginx:
     build:
-      context: ./srcs/requirements/nginx
+      context: ./requirements/nginx
     image: nginx
     container_name: nginx
     restart: always
@@ -19,7 +19,7 @@ services:
 
   mariadb:
     build:
-      context: ./srcs/requirements/mariadb
+      context: ./requirements/mariadb
     image: mariadb
     container_name: mariadb
     restart: always
@@ -32,7 +32,7 @@ services:
 
   wordpress:
     build:
-      context: ./srcs/requirements/wordpress
+      context: ./requirements/wordpress
     image: wordpress
     container_name: wordpress
     restart: always
